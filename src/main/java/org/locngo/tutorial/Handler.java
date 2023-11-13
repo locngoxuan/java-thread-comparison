@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.IOException;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * @author xuanloc0511@gmail.com
  */
@@ -30,14 +33,16 @@ public class Handler implements Runnable {
     public void run() {
         try {
             cmd.run();
+            long duration = System.currentTimeMillis() - cmd.getStarted();
             String msg = String.format("Handle command id=%d successful after %d ms at thread (name=%s, id=%d)",
-                                       cmd.getId(), System.currentTimeMillis() - cmd.getStarted(),
+                                       cmd.getId(), duration,
                                        getThreadName(), getThreadId());
             System.out.println(msg);
             if (endHandler != null) {
                 endHandler.handle();
             }
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

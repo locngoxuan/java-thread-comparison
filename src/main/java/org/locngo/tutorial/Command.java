@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.IOException;
+
 /**
  * @author xuanloc0511@gmail.com
  */
@@ -14,20 +16,12 @@ public class Command {
     private final long started = System.currentTimeMillis();
     private int id;
 
-    public int getId() {
-        return id;
+    public void run() throws InterruptedException, IOException {
+        someInternalLogic();
     }
 
-    public Command setId(int id) {
-        this.id = id;
-        return this;
-    }
 
-    public long getStarted() {
-        return started;
-    }
-
-    public void run() throws InterruptedException {
+    private void someInternalLogic() throws InterruptedException {
         Thread.sleep(1000);
     }
 }
